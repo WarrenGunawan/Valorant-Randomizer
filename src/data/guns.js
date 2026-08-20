@@ -1,4 +1,6 @@
 export const GUNS = [
+    { id: 'melee', name: 'Melee', cost: 0, image: '/images/guns/melee.png' },
+
     { id: 'classic', name: 'Classic', cost: 0, image: '/images/guns/classic.png' },
     { id: 'shorty', name: 'Shorty', cost: 300, image: '/images/guns/shorty.png' },
     { id: 'frenzy', name: 'Frenzy', cost: 450, image: '/images/guns/frenzy.png' },
