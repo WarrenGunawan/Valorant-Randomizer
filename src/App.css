@@ -1,27 +1,93 @@
 body {
     background-color: #001B29;
+    overflow: hidden;;
     display: flex;
-    overflow: hidden;
     justify-content: center;
     align-items: center;
-    font-family: "Commissioner", sans-serif;
+
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+
+    color: white;
 }
 
-.icon-resize {
+.agent-icon-resize {
     height: 100px;
     width: 100px;
     border-radius: 100%;
+
+    background-color: #003d5c;
+    border-color: #003d5c;
+    border-width: 5px;
+    border-style: solid;
 }
 
+.ability-icon-resize {
+    height: 70px;
+    width: 70px;
+}
+
+.gun-icon-resize {
+    height: 70px;
+    width: auto;
+}
+
+.shield-icon-resize {
+    height: 70px;
+    width: 70px;
+}
+
+.phoenix-sticker-resize {
+    height: 150px;
+    width: 100px;
+    padding-left: 10px;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+.brimstone-sticker-resize {
+    height: 150px;
+    width: 150px;
+    padding-right: 10px;
+}
+
+
+
 .main-div {
-  width: 100vw;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.round-Loadout-Div {
+    background-color: #00293d;
+
+    display: flex;
+    flex-direction: row;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #003d5c;
+    border-radius: 65px;
+
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+
+    padding-right: 30px;
 }
 
 .color1 {
