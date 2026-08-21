@@ -10,57 +10,56 @@ const roles = [
     { id: 'sentinel', name: 'Sentinel' },
 ]
 
-export function SettingsPanel({ setRandomAgentId, gameStarted, setGameStarted }) {
-    const [ buttonsSelected, setButtonsSelected ] = useState(
-        Object.fromEntries(roles.map((role) => [role.id, true]))
-    )
-
+export function SettingsPanel({ buttonsSelected, setButtonsSelected, randomAgentId, setRandomAgentId, gameStarted, setGameStarted, randomizeAgent, isRandomizing }) {
     function toggleRole(id) {
-        const count = Object.values(buttonsSelected).filter((value) => value === true).length
-        const isCurrentlySelected = buttonsSelected[id]
+        if (isRandomizing) return;
 
-        if(isCurrentlySelected && count <= 1) {
-            return
+        const count = Object.values(buttonsSelected).filter((value) => value === true).length;
+        const isCurrentlySelected = buttonsSelected[id];
+
+        if (isCurrentlySelected && count <= 1) {
+            return;
         }
 
         setButtonsSelected((prev) => ({
             ...prev,
             [id]: !prev[id]
-        }))
+        }));
     }
 
-    function randomizeAgent() {
-        const selectedRoles = Object.entries(buttonsSelected)
-            .filter(([roleId, isSelected]) => isSelected)
-            .map(([roleId]) => roleId);
-
-        const eligibleAgents = AGENTS.filter((agent) => selectedRoles.includes(agent.role));
-
-        const randomIndex = Math.floor(Math.random() * eligibleAgents.length);
-        const chosenAgent = eligibleAgents[randomIndex];
-
-        setRandomAgentId(chosenAgent.id);
+    const startGame = (e) => {
+        setGameStarted(true)
     }
 
 
 
 
     return (
-        <div className='randomizer-settings-div'>
+        <div className='randomizer-settings-div' style={{ opacity: isRandomizing ? 0.5 : 1, pointerEvents: isRandomizing ? 'none' : 'auto' }}>
             <p className='text-font' style={{ fontSize: 15, margin: 0, paddingRight: 20, paddingLeft: 20, paddingTop: 10, paddingBottom: 10 }}>Select the roles you want randomized to start the game!</p>
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 {roles.map((role) => (
-                    <button className={buttonsSelected[role.id] ? 'role-button' : 'role-button-selected'} key={role.id} onClick={(() => toggleRole(role.id))}>
-                        <img className='role-icon-resize' style={buttonsSelected[role.id] ? { opacity: 1 } : { opacity: 0.5 }} 
+                    <button className={buttonsSelected[role.id] ? 'role-button' : 'role-button-selected'} key={role.id} onClick={() => toggleRole(role.id)} disabled={isRandomizing}>
+                        <img className='role-icon-resize' style={buttonsSelected[role.id] ? { opacity: 1 } : { opacity: 0.5 }}
                             src={ROLES.find((r) => r.id === role.id).icon} />
                     </button>
                 ))}
             </div>
 
-            <button className='randomize-agent-button' onClick={() => (randomizeAgent())}>
-                <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Loadout</p>
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {randomAgentId !== null && (
+                    <div>
+                         <button className='randomize-agent-button' onClick={startGame} disabled={isRandomizing}>
+                            <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Start</p>
+                        </button>
+                    </div>
+                )}
+
+                <button className='randomize-agent-button' onClick={randomizeAgent} disabled={isRandomizing}>
+                    <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Loadout</p>
+                </button>
+            </div>  
         </div>
     )
 }

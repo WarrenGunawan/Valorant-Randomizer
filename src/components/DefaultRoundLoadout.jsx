@@ -9,7 +9,6 @@ import EightCharge from './chargeImages/EightCharge';
 import FiveStarCharges from './chargeImages/FiveStarCharges';
 
 
-// Picks the correct charge indicator component based on an ability's maxCharges value
 function renderCharge(numberOfCharges) {
     if (numberOfCharges === 1) return <OneCharge numberOfCharges={0} />;
     if (numberOfCharges === 2) return <TwoCharge numberOfCharges={0} />;
@@ -49,7 +48,6 @@ export function DefaultRoundLoadout({ randomAgentId }) {
 
     const isReyna = randomAgentId === 'reyna';
     const isAstra = randomAgentId === 'astra';
-    const isBrimstone = randomAgentId === 'brimstone';
 
 
     return (
@@ -80,8 +78,7 @@ export function DefaultRoundLoadout({ randomAgentId }) {
                             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
                                 <p style={{ fontSize: 11, margin: 0 }}>{eName}</p>
                                 <img className='ability-icon-resize' src={eIcon} />
-                                {/* Brimstone's Sky Smoke is hardcoded to 3 charges; everyone else uses their actual maxCharges */}
-                                {!isReyna && !isAstra && (isBrimstone ? <ThreeCharge numberOfCharges={0} /> : renderCharge(eNumberOfCharges))}
+                                {!isReyna && !isAstra && renderCharge(eNumberOfCharges)}
                             </div>
                         </div>
 
@@ -102,7 +99,7 @@ export function DefaultRoundLoadout({ randomAgentId }) {
                 )}
             </div>
 
-            <div style={{ width: 275, display: 'flex', justifyContent: 'center', marginRight: 20 }}>
+            <div style={{ width: 350, display: 'flex', justifyContent: 'center', marginRight: 20 }}>
                 <img className='gun-icon-resize' src={vandal} />
             </div>
 

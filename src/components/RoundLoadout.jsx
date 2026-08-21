@@ -4,60 +4,165 @@ import '../App.css';
 
 import OneCharge from './chargeImages/OneCharge';
 import TwoCharge from './chargeImages/twoCharge';
+import ThreeCharge from './chargeImages/ThreeCharge';
+import EightCharge from './chargeImages/EightCharge';
+import FiveStarCharges from './chargeImages/FiveStarCharges';
 
 
-export function RoundLoadout({ randomAgentId }) {
 
-    const randomAgentIcon = AGENTS.find((agent) => agent.id === randomAgentId).icon;
-    const randomAgentName = AGENTS[0].name;
+function renderCharge(numberOfCharges, randomNumberOfCharges) {
+    if (numberOfCharges === 1) return <OneCharge numberOfCharges={randomNumberOfCharges} />;
+    if (numberOfCharges === 2) return <TwoCharge numberOfCharges={randomNumberOfCharges} />;
+    if (numberOfCharges === 3) return <ThreeCharge numberOfCharges={randomNumberOfCharges} />;
+    if (numberOfCharges === 8) return <EightCharge numberOfCharges={randomNumberOfCharges} />;
+    return null;
+}
 
-    const c = ABILITIES.jett[0].image;
-    const q = ABILITIES.jett[1].image;
-    const e = ABILITIES.jett[2].image;
 
-    const melee = GUNS[0].image;
-    const classic = GUNS[1].image;
-    const vandal = GUNS[14].image;
+export function RoundLoadout({ randomAgentId, credits, rerollTrigger }) {
+    const randomAgent = AGENTS.find((agent) => agent.id === randomAgentId) ?? AGENTS.find((agent) => agent.id === 'jett');
+    const randomAgentIcon = randomAgent?.icon;
+    const randomAgentName = randomAgent?.name;
 
-    const heavy = SHIELDS[2].image;
+    const isReyna = randomAgentId === 'reyna';
+    const isAstra = randomAgentId === 'astra';
 
+
+    let currentCredits = credits;
+
+    // Get Gun
+    const affordableGuns = GUNS.filter((gun) => gun.cost <= currentCredits);
+    const gunIndex = Math.floor(Math.random() * affordableGuns.length);
+    const randomGun = affordableGuns[gunIndex];
+    const randomGunImage = randomGun?.image;
+    currentCredits -= randomGun?.cost;
+
+    // Get Shield
+    const affordableShields = SHIELDS.filter((gun) => gun.cost <= currentCredits);
+    const shieldIndex = Math.floor(Math.random() * affordableShields.length);
+    const randomShield = affordableShields[shieldIndex];
+    const randomShieldImage = randomShield?.image;
+    currentCredits -= randomGun?.cost;
+
+    const agentAbilities = ABILITIES[randomAgentId] || ABILITIES['jett'];
+    const c = agentAbilities.find((a) => a.slot === 'c');
+    const q = agentAbilities.find((a) => a.slot === 'q');
+    const e = agentAbilities.find((a) => a.slot === 'e');
+
+    const cIcon = c?.image;
+    const qIcon = q?.image;
+    const eIcon = e?.image;
+
+    const cName = c?.name;
+    const qName = q?.name;
+    const eName = e?.name;
+
+    const cCost = c?.cost;
+    const qCost = q?.cost;
+    const eCost = e?.cost;
+
+    const cNumberOfCharges = c?.maxCharges;
+    const qNumberOfCharges = q?.maxCharges;
+    const eNumberOfCharges = e?.maxCharges;
+
+    // Get C Ability
+    let cRandomNumberOfCharges = 0;
+    if(!isAstra && cCost <= currentCredits)  {
+        const affordableCharges = Math.floor(currentCredits / cCost);
+        const maxPossible = Math.min(affordableCharges, cNumberOfCharges);
+        cRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+        currentCredits -= cRandomNumberOfCharges * cCost;
+    }
+
+    let qRandomNumberOfCharges = 0;
+    if(!isAstra && !isReyna && qCost <= currentCredits)  {
+        const affordableCharges = Math.floor(currentCredits / qCost);
+        const maxPossible = Math.min(affordableCharges, qNumberOfCharges);
+        qRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+        currentCredits -= qRandomNumberOfCharges * qCost;
+    }
+    
+
+    let eRandomNumberOfCharges = 1;
+    if(!isAstra && eCost <= currentCredits && eNumberOfCharges != 1)  {
+        const affordableCharges = Math.floor(currentCredits / eCost);
+        const maxPossible = Math.min(affordableCharges, eNumberOfCharges);
+        eRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+        currentCredits -= eRandomNumberOfCharges * eCost;
+    }
+
+
+
+
+    let xRandomNumberOfCharges = 1;
+    if(isAstra) {
+        const x = agentAbilities.find((a) => a.slot === 'x');
+        const xNumberOfCharges = 4;
+        const xCost = x?.cost;
+        
+        if(xCost <= currentCredits) {
+            const affordableCharges = Math.floor(currentCredits / xCost);
+            const maxPossible = Math.min(affordableCharges, xNumberOfCharges);
+            xRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+            currentCredits -= xRandomNumberOfCharges * xCost;
+        }
+    }
 
 
     return (
         <div className='round-loadout-div'>
             <img className='agent-icon-resize' src={randomAgentIcon} />
 
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    {/* C Ability */}
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 20 }}>
+                        <p style={{ fontSize: 11, margin: 0 }}>{cName}</p>
+                        <img className='ability-icon-resize' src={cIcon} />
+                        {!isAstra && renderCharge(cNumberOfCharges, cRandomNumberOfCharges)}
+                    </div>
 
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                {/* C Ability */}
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 20 }}>
-                    <p style={{ fontSize: 11, margin: 0 }}>Cloud Burst</p>
-                    <img className='ability-icon-resize' src={c} />
-                    <OneCharge numberOfCharges={0} />
+                    {/* Q + E — grouped together so Reyna's shared meter can sit centered beneath just these two */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            {/* Q Ability */}
+                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 20, marginLeft: 20 }}>
+                                <p style={{ fontSize: 11, margin: 0 }}>{qName}</p>
+                                <img className='ability-icon-resize' src={qIcon} />
+                                {!isReyna && !isAstra && renderCharge(qNumberOfCharges, qRandomNumberOfCharges)}
+                            </div>
+
+                            {/* E Ability */}
+                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+                                <p style={{ fontSize: 11, margin: 0 }}>{eName}</p>
+                                <img className='ability-icon-resize' src={eIcon} />
+                                {!isReyna && !isAstra && renderCharge(eNumberOfCharges, eRandomNumberOfCharges)}
+                            </div>
+                        </div>
+
+                        {/* Reyna: Devour + Dismiss share one soul orb meter */}
+                        {isReyna && (
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
+                                <TwoCharge numberOfCharges={eRandomNumberOfCharges} />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Q Ability */}
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 20, marginLeft: 20 }}>
-                    <p style={{ fontSize: 11, margin: 0 }}>Updraft</p>
-                    <img className='ability-icon-resize' src={q} />
-                    <TwoCharge numberOfCharges={1} />
-                </div>
-
-                {/* E Ability */}
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
-                    <p style={{ fontSize: 11, margin: 0 }}>Tailwind</p>
-                    <img className='ability-icon-resize' src={e} />
-                    <OneCharge numberOfCharges={1} />
-                </div>
+                {/* Astra: all three abilities draw from the same 5 stars */}
+                {isAstra && (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
+                        <FiveStarCharges numberOfCharges={xRandomNumberOfCharges} />
+                    </div>
+                )}
             </div>
 
-
-            <div style={{ width: 275, display: 'flex', justifyContent: 'center', marginRight: 20 }}>
-                <img className='gun-icon-resize' src={vandal} />
+            <div style={{ width: 350, display: 'flex', justifyContent: 'center', marginRight: 20 }}>
+                <img className='gun-icon-resize' src={randomGunImage} />
             </div>
 
             <div className='shield-icon-background'>
-                <img className='shield-icon-resize' src={heavy} />
+                <img className='shield-icon-resize' src={randomShieldImage} />
             </div>
         </div>
     )

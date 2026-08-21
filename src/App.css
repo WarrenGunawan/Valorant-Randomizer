@@ -33,8 +33,10 @@ body {
 }
 
 .gun-icon-resize {
-    height: 80px;
+    height: auto;
     width: auto;
+    max-width: 350px;
+    max-height: 100px;
 }
 
 .shield-icon-resize {
@@ -112,6 +114,35 @@ body {
 
 .randomize-agent-button:active {
     opacity: 0.5;
+}
+
+.credit-input-box {
+    margin: 8px;
+    width: 100%;
+    max-width: 200px;
+    padding: 12px 16px;
+    font-size: 24px;
+    color: white;
+    background-color: #003d5c;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px #001B29;
+    outline: none;
+    transition: all 0.3s ease;
+
+    font-family: "Barlow Condensed", sans-serif;
+}
+
+.credit-input-box::placeholder {
+  color: #a3a3a3;
+}
+
+.credit-input-box:hover {
+  border-color: #a3a3a3;
+}
+
+.credit-input-box:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
 }
 
 
