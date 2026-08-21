@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { ROLES } from '../data/roles';
+import { ROLES, AGENTS } from '../data';
 import '../App.css'
 
 
@@ -10,7 +10,7 @@ const roles = [
     { id: 'sentinel', name: 'Sentinel' },
 ]
 
-export function SettingsPanel() {
+export function SettingsPanel({ setRandomAgentId, gameStarted, setGameStarted }) {
     const [ buttonsSelected, setButtonsSelected ] = useState(
         Object.fromEntries(roles.map((role) => [role.id, true]))
     )
@@ -29,6 +29,21 @@ export function SettingsPanel() {
         }))
     }
 
+    function randomizeAgent() {
+        const selectedRoles = Object.entries(buttonsSelected)
+            .filter(([roleId, isSelected]) => isSelected)
+            .map(([roleId]) => roleId);
+
+        const eligibleAgents = AGENTS.filter((agent) => selectedRoles.includes(agent.role));
+
+        const randomIndex = Math.floor(Math.random() * eligibleAgents.length);
+        const chosenAgent = eligibleAgents[randomIndex];
+
+        setRandomAgentId(chosenAgent.id);
+    }
+
+
+
 
     return (
         <div className='randomizer-settings-div'>
@@ -43,8 +58,8 @@ export function SettingsPanel() {
                 ))}
             </div>
 
-            <button className='randomize-agent-button'>
-                <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Agent</p>
+            <button className='randomize-agent-button' onClick={() => (randomizeAgent())}>
+                <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Loadout</p>
             </button>
         </div>
     )

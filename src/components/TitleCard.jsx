@@ -11,7 +11,7 @@ export function TitleCard() {
 
             <div style={{ position: 'relative', top: 20, display: 'flex', flexDirection: 'column' }}>
                 <p style={{ fontWeight: 'bold', fontSize: 100, margin: 0 }}>VAL ROULETTE</p>
-                <p className='text-font' style={{ fontSize: 15, position: 'relative', left: 300, bottom: 35 }}>Randomize your load out each round!</p>
+                <p className='text-font' style={{ fontSize: 15, position: 'relative', left: 300, bottom: 35 }}>Randomize your loadout each round!</p>
             </div>
 
             <img className='phoenix-sticker-resize' src={phoenixSticker} />

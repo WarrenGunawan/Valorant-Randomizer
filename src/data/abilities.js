@@ -1,17 +1,18 @@
 export const ABILITIES = {
     jett: [
         { name: 'Cloudburst', slot: 'c', cost: 100, maxCharges: 2, image: '/images/abilities/jett/cloudburst.webp' },
-        { name: 'Updraft', slot: 'q', cost: 150, maxCharges: 2, image: '/images/abilities/jett/tailwind.webp' },
-        { name: 'Tailwind', slot: 'e', cost: 0, startCharges: 1,  maxCharges: 1, image: '/images/abilities/jett/updraft.webp' }
+        { name: 'Updraft', slot: 'q', cost: 150, maxCharges: 2, image: '/images/abilities/jett/updraft.webp' },
+        { name: 'Tailwind', slot: 'e', cost: 0, startCharges: 1,  maxCharges: 1, image: '/images/abilities/jett/tailwind.webp' }
     ],
     reyna: [
         { name: 'Leer', slot: 'c', cost: 250, maxCharges: 2, image: '/images/abilities/reyna/leer.webp' },
-        { name: 'Devour/Dismiss', slot: 'q', cost: 200, startCharges: 1, maxCharges: 2, dismiss: '/images/abilities/reyna/dismiss.webp', devour: '/images/abilities/reyna/devour.webp' }
+        { name: 'Devour', slot: 'q', cost: 200, startCharges: 1, maxCharges: 2, image: '/images/abilities/reyna/devour.webp' },
+        { name: 'Dismiss', slot: 'e', cost: 200, startCharges: 1, maxCharges: 2, image: '/images/abilities/reyna/dismiss.webp' }
     ],
     phoenix: [
         { name: 'Blaze', slot: 'c', cost: 150, maxCharges: 1, image: '/images/abilities/phoenix/blaze.webp' },
-        { name: 'Hot Hands', slot: 'e', cost: 200, maxCharges: 1, image: '/images/abilities/phoenix/hothands.webp' },
-        { name: 'Curveball', slot: 'q', cost: 250, startCharges: 1, maxCharges: 2, image: '/images/abilities/phoenix/curveball.webp' }
+        { name: 'Hot Hands', slot: 'q', cost: 200, maxCharges: 1, image: '/images/abilities/phoenix/hothands.webp' },
+        { name: 'Curveball', slot: 'e', cost: 250, startCharges: 1, maxCharges: 2, image: '/images/abilities/phoenix/curveball.webp' }
     ],
     raze: [
         { name: 'Boom Bot', slot: 'c', cost: 300, maxCharges: 1, image: '/images/abilities/raze/boombot.webp' },
