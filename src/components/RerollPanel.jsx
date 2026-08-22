@@ -10,7 +10,7 @@ export function RerollPanel({ randomAgentId, nextRound }) {
     };
 
     function moveToNextRound() {
-        if ((roundCredits % 100 != 0) || roundCredits < 0 || roundCredits > 9000) {
+        if ((roundCredits % 50 != 0) || roundCredits < 0 || roundCredits > 9000) {
             return;
         }
 

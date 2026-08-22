@@ -1,7 +1,7 @@
 export const ABILITIES = {
     jett: [
         { name: 'Cloudburst', slot: 'c', cost: 100, maxCharges: 2, image: '/images/abilities/jett/cloudburst.webp' },
-        { name: 'Updraft', slot: 'q', cost: 150, maxCharges: 2, image: '/images/abilities/jett/updraft.webp' },
+        { name: 'Updraft', slot: 'q', cost: 150, maxCharges: 1, image: '/images/abilities/jett/updraft.webp' },
         { name: 'Tailwind', slot: 'e', cost: 0, startCharges: 1,  maxCharges: 1, image: '/images/abilities/jett/tailwind.webp' }
     ],
     reyna: [
