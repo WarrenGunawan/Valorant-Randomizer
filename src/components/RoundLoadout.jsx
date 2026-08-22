@@ -3,7 +3,7 @@ import { AGENTS, ABILITIES, GUNS, SHIELDS } from '../data';
 import '../App.css';
 
 import OneCharge from './chargeImages/OneCharge';
-import TwoCharge from './chargeImages/twoCharge';
+import TwoCharge from './chargeImages/TwoCharge';
 import ThreeCharge from './chargeImages/ThreeCharge';
 import EightCharge from './chargeImages/EightCharge';
 import FiveStarCharges from './chargeImages/FiveStarCharges';
