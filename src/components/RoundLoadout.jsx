@@ -83,10 +83,12 @@ export function RoundLoadout({ randomAgentId, credits, rerollTrigger }) {
         const xCost = x?.cost;
         
         if(xCost <= currentCredits) {
-            const affordableCharges = Math.floor(currentCredits / xCost);
+            const affordableCharges = Math.floor(currentCredits / eCost);
             const maxPossible = Math.min(affordableCharges, xNumberOfCharges);
-            xRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
-            currentCredits -= xRandomNumberOfCharges * xCost;
+            const extraRoll = Math.max(maxPossible - 1, 0);
+            const extraCharges = Math.floor(Math.random() * (extraRoll + 1));
+            xRandomNumberOfCharges += extraCharges;
+            currentCredits -= extraCharges * eCost;
         }
     }
 
