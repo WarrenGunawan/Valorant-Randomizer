@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { TitleCard, RoundLoadout, DefaultRoundLoadout, SettingsPanel, RerollPanel } from './components';
+import { TitleCard, RoundLoadout, DefaultRoundLoadout, SettingsPanel, RerollPanel, ResetButton } from './components';
 import { AGENTS } from './data';
 import './App.css';
 
@@ -11,9 +11,9 @@ const roles = [
 ];
 
 function App() {
-    const [gameStarted, setGameStarted] = useState(false);
-    const [randomAgentId, setRandomAgentId] = useState(null);
-    const [buttonsSelected, setButtonsSelected] = useState(
+    const [ gameStarted, setGameStarted ] = useState(false);
+    const [ randomAgentId, setRandomAgentId ] = useState(null);
+    const [ buttonsSelected, setButtonsSelected ] = useState(
         Object.fromEntries(roles.map((role) => [role.id, true]))
     );
 
@@ -53,8 +53,8 @@ function App() {
 
 
     // Used to calculate valid buys
-    const [credits, setCredits] = useState(800);
-    const [rerollTrigger, setRerollTrigger] = useState(0);
+    const [ credits, setCredits ] = useState(800);
+    const [ rerollTrigger, setRerollTrigger ] = useState(0);
 
     function nextRound(newCredits) {
         setCredits(Number(newCredits));
@@ -62,7 +62,7 @@ function App() {
     }
 
 
-    // Add messahe after first game
+    // Add message after first game
 
 
 
@@ -73,6 +73,12 @@ function App() {
                 <>
                     <RoundLoadout randomAgentId={randomAgentId} credits={credits} rerollTrigger={rerollTrigger}/>
                     <RerollPanel randomAgentId={randomAgentId} nextRound={nextRound}/>
+                    <ResetButton 
+                        gameStarted={gameStarted} 
+                        setGameStarted={setGameStarted} r
+                        andomAgentId={randomAgentId} 
+                        setRandomAgentId={setRandomAgentId} 
+                    />
                 </>
             ) : (
                 <>

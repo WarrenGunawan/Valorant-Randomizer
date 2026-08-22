@@ -10,6 +10,9 @@ import FiveStarCharges from './chargeImages/FiveStarCharges';
 
 
 
+
+
+
 function renderCharge(numberOfCharges, randomNumberOfCharges) {
     if (numberOfCharges === 1) return <OneCharge numberOfCharges={randomNumberOfCharges} />;
     if (numberOfCharges === 2) return <TwoCharge numberOfCharges={randomNumberOfCharges} />;
@@ -28,21 +31,17 @@ export function RoundLoadout({ randomAgentId, credits, rerollTrigger }) {
     const isAstra = randomAgentId === 'astra';
 
 
+    const spendOrder = ['gun', 'shield', 'c', 'q', 'e'];
+    const shuffledSpendOrder = [...spendOrder].sort(() => Math.random() - 0.5);
     let currentCredits = credits;
 
-    // Get Gun
-    const affordableGuns = GUNS.filter((gun) => gun.cost <= currentCredits);
-    const gunIndex = Math.floor(Math.random() * affordableGuns.length);
-    const randomGun = affordableGuns[gunIndex];
-    const randomGunImage = randomGun?.image;
-    currentCredits -= randomGun?.cost;
+    // Gun variables
+    let randomGun = null;
+    let randomGunImage = null;
 
     // Get Shield
-    const affordableShields = SHIELDS.filter((gun) => gun.cost <= currentCredits);
-    const shieldIndex = Math.floor(Math.random() * affordableShields.length);
-    const randomShield = affordableShields[shieldIndex];
-    const randomShieldImage = randomShield?.image;
-    currentCredits -= randomGun?.cost;
+    let randomShield = null;
+    let randomShieldImage = null;
 
     const agentAbilities = ABILITIES[randomAgentId] || ABILITIES['jett'];
     const c = agentAbilities.find((a) => a.slot === 'c');
@@ -65,31 +64,14 @@ export function RoundLoadout({ randomAgentId, credits, rerollTrigger }) {
     const qNumberOfCharges = q?.maxCharges;
     const eNumberOfCharges = e?.maxCharges;
 
-    // Get C Ability
+    // C ability charges
     let cRandomNumberOfCharges = 0;
-    if(!isAstra && cCost <= currentCredits)  {
-        const affordableCharges = Math.floor(currentCredits / cCost);
-        const maxPossible = Math.min(affordableCharges, cNumberOfCharges);
-        cRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
-        currentCredits -= cRandomNumberOfCharges * cCost;
-    }
 
+    // Q ability charges
     let qRandomNumberOfCharges = 0;
-    if(!isAstra && !isReyna && qCost <= currentCredits)  {
-        const affordableCharges = Math.floor(currentCredits / qCost);
-        const maxPossible = Math.min(affordableCharges, qNumberOfCharges);
-        qRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
-        currentCredits -= qRandomNumberOfCharges * qCost;
-    }
     
-
+    // E ability charges
     let eRandomNumberOfCharges = 1;
-    if(!isAstra && eCost <= currentCredits && eNumberOfCharges != 1)  {
-        const affordableCharges = Math.floor(currentCredits / eCost);
-        const maxPossible = Math.min(affordableCharges, eNumberOfCharges);
-        eRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
-        currentCredits -= eRandomNumberOfCharges * eCost;
-    }
 
 
 
@@ -107,6 +89,48 @@ export function RoundLoadout({ randomAgentId, credits, rerollTrigger }) {
             currentCredits -= xRandomNumberOfCharges * xCost;
         }
     }
+
+
+    shuffledSpendOrder.forEach((item) => {
+        if (item === 'gun') {
+            const affordableGuns = GUNS.filter((gun) => gun.cost <= currentCredits);
+            const gunIndex = Math.floor(Math.random() * affordableGuns.length);
+            randomGun = affordableGuns[gunIndex];
+            randomGunImage = randomGun?.image;
+            currentCredits -= randomGun?.cost ?? 0;
+        } else if (item === 'shield') {
+            const affordableShields = SHIELDS.filter((shield) => shield.cost <= currentCredits);
+            const shieldIndex = Math.floor(Math.random() * affordableShields.length);
+            randomShield = affordableShields[shieldIndex];
+            randomShieldImage = randomShield?.image;
+            currentCredits -= randomShield?.cost ?? 0;
+        } else if (item === 'c') {
+            if (!isAstra && cCost <= currentCredits) {
+                const affordableCharges = Math.floor(currentCredits / cCost);
+                const maxPossible = Math.min(affordableCharges, cNumberOfCharges);
+                cRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+                currentCredits -= cRandomNumberOfCharges * cCost;
+            }
+        } else if (item === 'q') {
+            if (!isAstra && !isReyna && qCost <= currentCredits) {
+                const affordableCharges = Math.floor(currentCredits / qCost);
+                const maxPossible = Math.min(affordableCharges, qNumberOfCharges);
+                qRandomNumberOfCharges = Math.floor(Math.random() * (maxPossible + 1));
+                currentCredits -= qRandomNumberOfCharges * qCost;
+            }
+        } else if (item === 'e') {
+            if (!isAstra && eCost <= currentCredits && eNumberOfCharges != 1) {
+                const affordableCharges = Math.floor(currentCredits / eCost);
+                const maxPossible = Math.min(affordableCharges, eNumberOfCharges);
+                const extraRoll = Math.max(maxPossible - 1, 0);
+                const extraCharges = Math.floor(Math.random() * (extraRoll + 1));
+                eRandomNumberOfCharges += extraCharges;
+                currentCredits -= extraCharges * eCost;
+            }
+        }
+    });
+
+    
 
 
     return (

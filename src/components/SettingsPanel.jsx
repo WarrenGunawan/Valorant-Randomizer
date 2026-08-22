@@ -57,7 +57,7 @@ export function SettingsPanel({ buttonsSelected, setButtonsSelected, randomAgent
                 )}
 
                 <button className='randomize-agent-button' onClick={randomizeAgent} disabled={isRandomizing}>
-                    <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Loadout</p>
+                    <p className='text-font' style={{ fontSize: 20, margin: 0, padding: 20 }}>Randomize Agent</p>
                 </button>
             </div>  
         </div>

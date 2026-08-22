@@ -116,6 +116,22 @@ body {
     opacity: 0.5;
 }
 
+.randomize-agent-button-inverted {
+    background-color: #003d5c;
+
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+    margin: 5px;
+
+    border-radius: 10px;
+}
+
+.randomize-agent-button-inverted:active {
+    opacity: 0.5;
+}
+
 .credit-input-box {
     margin: 8px;
     width: 100%;
@@ -228,6 +244,14 @@ body {
     font-style: normal;
 
     color: white;
+}
+
+.text-font-inverted {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+
+    color: #0081ae;
 }
 
 .color1 {
